@@ -50,5 +50,17 @@ namespace ShaunToDoProject.Controllers
       return Ok();
     }
 
+    public async Task<IActionResult> MarkDone(Guid id)
+    {
+      if (id == Guid.Empty) return BadRequest();
+
+      var success = await _todoItemService.MarkDoneAsync(id);
+
+      if (!success) return BadRequest();
+
+      return Ok();
+
+    }
+
   }
 }

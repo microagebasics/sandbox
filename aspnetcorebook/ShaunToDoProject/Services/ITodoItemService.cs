@@ -11,5 +11,8 @@ namespace ShaunToDoProject.Services
     Task<IEnumerable<TodoItem>> GetIncompleteItemsAsync();
 
     Task<bool> AddItemAsync(NewTodoItem newItem);
+
+    Task<bool> MarkDoneAsync(Guid id);
+
   }
 }
