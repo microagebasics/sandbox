@@ -5,6 +5,8 @@ $(document).ready(function () {
   // Wire up the add button to send the new item to the server
   $("#add-item-button").on("click", addItem);
 
+  $("#add-item-date").datepicker();
+
 });
 
 function addItem() {
@@ -12,8 +14,9 @@ function addItem() {
   $("#add-item-error").hide();
 
   var newTitle = $("#add-item-title").val();
+  var newDate = $("#add-item-date").val();
 
-  $.post("/Todo/AddItem", { title: newTitle }, function () {
+  $.post("/Todo/AddItem", { title: newTitle, dueAt: newDate }, function () {
     window.location = "/Todo";
   })
     .fail(function (data) {

@@ -12,5 +12,7 @@ namespace ShaunToDoProject.Models
     [Required]
     public string Title { get; set; }
 
+    public DateTimeOffset? DueAt { get; set; }
+
   }
 }
