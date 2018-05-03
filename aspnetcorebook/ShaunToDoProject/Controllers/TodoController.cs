@@ -32,5 +32,23 @@ namespace ShaunToDoProject.Controllers
 
       return View(model);
     }
+
+    public async Task<IActionResult> AddItem(NewTodoItem newItem)
+    {
+      if (!ModelState.IsValid)
+      {
+        return BadRequest(ModelState);
+      }
+
+      var success = await _todoItemService.AddItemAsync(newItem);
+
+      if (!success)
+      {
+        return BadRequest(new { error = "Could not add Item" });
+      }
+
+      return Ok();
+    }
+
   }
 }
