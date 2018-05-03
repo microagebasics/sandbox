@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -28,7 +28,7 @@ namespace ShaunToDoProject
     {
 
       services.AddDbContext<ApplicationDbContext>(options =>
-          options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+          options.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
 
       services.AddIdentity<ApplicationUser, IdentityRole>()
           .AddEntityFrameworkStores<ApplicationDbContext>()
@@ -37,7 +37,7 @@ namespace ShaunToDoProject
       // Add application services.
       services.AddTransient<IEmailSender, EmailSender>();
 
-      services.AddSingleton<ITodoItemService, FakeTodoItemService>();
+      services.AddScoped<ITodoItemService, TodoItemService>();
 
       services.AddMvc();
     }
