@@ -18,19 +18,20 @@ namespace ShaunToDoProject.Services
       _context = context;
     }
 
-    public async Task<IEnumerable<TodoItem>> GetIncompleteItemsAsync()
+    public async Task<IEnumerable<TodoItem>> GetIncompleteItemsAsync(ApplicationUser user)
     {
 
       return await _context.Items
-        .Where(x => x.IsDone == false)
+        .Where(x => x.IsDone == false && x.OwnerId == user.Id)
         .ToArrayAsync();
 
     }
 
-    public async Task<bool> AddItemAsync(NewTodoItem newItem)
+    public async Task<bool> AddItemAsync(NewTodoItem newItem, ApplicationUser user)
     {
       var entity = new TodoItem
       {
+        OwnerId = user.Id,
         Id = Guid.NewGuid(),
         IsDone = false,
         Title = newItem.Title,
@@ -45,10 +46,10 @@ namespace ShaunToDoProject.Services
 
     }
 
-    public async Task<bool> MarkDoneAsync(Guid id)
+    public async Task<bool> MarkDoneAsync(Guid id, ApplicationUser user)
     {
       var item = await _context.Items
-        .Where(x => x.Id == id)
+        .Where(x => x.Id == id && x.OwnerId == user.Id)
         .SingleOrDefaultAsync();
 
       if (item == null) return false;
