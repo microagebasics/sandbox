@@ -49,6 +49,7 @@ namespace ShaunToDoProject
       {
         app.UseBrowserLink();
         app.UseDeveloperExceptionPage();
+        app.UseDatabaseErrorPage();
       }
       else
       {
@@ -56,6 +57,8 @@ namespace ShaunToDoProject
       }
 
       app.UseStaticFiles();
+
+      app.UseAuthentication();
 
       app.UseMvc(routes =>
       {
