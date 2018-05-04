@@ -8,7 +8,7 @@ using ShaunToDoProject.Services;
 using Microsoft.EntityFrameworkCore;
 using Xunit;
 
-namespace ShaunToDoProject.Tests
+namespace ShaunToDoProject.UnitTests
 {
   public class TodoItemServiceShould
   {
