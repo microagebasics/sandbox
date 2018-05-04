@@ -43,13 +43,17 @@ namespace ShaunToDoProject
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-    public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+    public void Configure(IApplicationBuilder app, IHostingEnvironment env, UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
     {
       if (env.IsDevelopment())
       {
         app.UseBrowserLink();
         app.UseDeveloperExceptionPage();
         app.UseDatabaseErrorPage();
+
+        // Make sure there's a test admin account
+        EnsureRolesAsync(roleManager).Wait();
+        EnsureTestAdminAsync(userManager).Wait();
       }
       else
       {
@@ -66,6 +70,33 @@ namespace ShaunToDoProject
                   name: "default",
                   template: "{controller=Home}/{action=Index}/{id?}");
       });
+    }
+
+    private static async Task EnsureRolesAsync(RoleManager<IdentityRole> roleManager)
+    {
+      var alreadyExists = await roleManager.RoleExistsAsync(Constants.AdministratorRole);
+
+      if (alreadyExists) return;
+
+      await roleManager.CreateAsync(new IdentityRole(Constants.AdministratorRole));
+    }
+
+    private static async Task EnsureTestAdminAsync(UserManager<ApplicationUser> userManager)
+    {
+      string admin_un = "admin@todo.local";
+      string admin_pw = "NotSecure123!";
+
+      var testAdmin = await userManager.Users
+        .Where(x => x.UserName == admin_un)
+        .SingleOrDefaultAsync();
+
+      if (testAdmin != null) return;
+
+      testAdmin = new ApplicationUser { UserName = admin_un, Email = admin_un };
+
+      await userManager.CreateAsync(testAdmin, admin_pw);
+      await userManager.AddToRoleAsync(testAdmin, Constants.AdministratorRole);
+
     }
   }
 }
