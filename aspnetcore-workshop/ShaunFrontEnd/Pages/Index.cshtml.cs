@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using ShaunDTO;
 using ShaunFrontEnd.Services;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ShaunFrontEnd.Pages
 {
@@ -13,10 +14,12 @@ namespace ShaunFrontEnd.Pages
   {
 
     protected readonly IApiClient _apiClient;
+    private readonly IAuthorizationService _authzService;
 
-    public IndexModel(IApiClient apiClient)
+    public IndexModel(IApiClient apiClient, IAuthorizationService authzService)
     {
       _apiClient = apiClient;
+      _authzService = authzService;
     }
 
     public IEnumerable<IGrouping<DateTimeOffset?, SessionResponse>> Sessions { get; set; }
@@ -25,8 +28,14 @@ namespace ShaunFrontEnd.Pages
 
     public int CurrentDayOffset { get; set; }
 
+    public bool IsAdmin { get; set; }
+
     public async Task OnGet(int day = 0)
     {
+
+      var authzResult = await _authzService.AuthorizeAsync(User, "Admin");
+      IsAdmin = authzResult.Succeeded;
+
       CurrentDayOffset = day;
 
       var sessions = await _apiClient.GetSessionsAsync();
