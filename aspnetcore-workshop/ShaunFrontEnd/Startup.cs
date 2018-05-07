@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using ShaunFrontEnd.Filters;
 using ShaunFrontEnd.Services;
 
 namespace ShaunFrontEnd
@@ -23,11 +24,15 @@ namespace ShaunFrontEnd
     // This method gets called by the runtime. Use this method to add services to the container.
     public void ConfigureServices(IServiceCollection services)
     {
-      services.AddMvc()
+      services.AddMvc(options => {
+          options.Filters.AddService<RequireLoginFilter>();
+        })
         .AddRazorPagesOptions(options =>
         {
           options.Conventions.AuthorizeFolder("/Admin", "Admin");
         });
+
+      services.AddTransient<RequireLoginFilter>();
 
       services.AddHttpClient<IApiClient, ApiClient>(client =>
       {

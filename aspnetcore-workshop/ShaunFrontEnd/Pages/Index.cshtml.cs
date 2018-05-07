@@ -23,6 +23,7 @@ namespace ShaunFrontEnd.Pages
     }
 
     public IEnumerable<IGrouping<DateTimeOffset?, SessionResponse>> Sessions { get; set; }
+    public IEnumerable<int> UserSessions { get; set; }
 
     public IEnumerable<(int Offset, DayOfWeek? DayofWeek)> DayOffsets { get; set; }
 
@@ -38,7 +39,7 @@ namespace ShaunFrontEnd.Pages
 
       CurrentDayOffset = day;
 
-      var sessions = await _apiClient.GetSessionsAsync();
+      var sessions = await GetSessionsAsync();
 
       var startDate = sessions.Min(s => s.StartTime?.Date);
       var endDate = sessions.Max(s => s.EndTime?.Date);
@@ -54,6 +55,17 @@ namespace ShaunFrontEnd.Pages
                          .OrderBy(s => s.TrackId)
                          .GroupBy(s => s.StartTime)
                          .OrderBy(g => g.Key);
+
+      var usersessions = await _apiClient.GetSessionsByAttendeeAsync(User.Identity.Name);
+
+      UserSessions = usersessions.Select(s => s.ID);
+
+
+    }
+
+    protected virtual Task<List<SessionResponse>> GetSessionsAsync()
+    {
+      return _apiClient.GetSessionsAsync();
     }
 
   }

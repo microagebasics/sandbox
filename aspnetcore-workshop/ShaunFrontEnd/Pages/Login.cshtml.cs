@@ -5,11 +5,13 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using ShaunFrontEnd.Filters;
 
 namespace ShaunFrontEnd.Pages
 {
-    public class LoginModel : PageModel
-    {
+  [SkipWelcome]
+  public class LoginModel : PageModel
+  {
     private readonly IAuthenticationSchemeProvider _authSchemeProvider;
 
     public LoginModel(IAuthenticationSchemeProvider authSchemeProvider)
