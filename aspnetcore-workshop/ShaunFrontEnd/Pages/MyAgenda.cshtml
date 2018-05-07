@@ -1,13 +1,11 @@
 ﻿@page
-@model IndexModel
+@model MyAgendaModel
 @{
-  ViewData["Title"] = "Home page";
+    ViewData["Title"] = "My Agenda";
 }
-
 
 <div class="agenda">
   <h1>My Conference @System.DateTime.Now.Year</h1>
-
 
   <ul class="nav nav-pills">
     @foreach (var day in Model.DayOffsets)
@@ -35,9 +33,6 @@
                   <em><a asp-page="Speaker" asp-route-id="@speaker.ID">@speaker.Name</a></em>
                 }
               </p>
-              <p authz="true" authz-policy="Admin">
-                <a asp-page="/Admin/EditSession" asp-route-id="@session.ID" class="btn btn-default btn-xs">Edit</a>
-              </p>
             </div>
           </div>
         </div>
@@ -45,4 +40,3 @@
     </div>
   }
 </div>
-

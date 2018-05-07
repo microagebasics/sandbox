@@ -23,6 +23,8 @@ namespace ShaunFrontEnd.Pages
 
     public SessionResponse Session { get; set; }
 
+    public bool IsInPersonalAgenda { get; set; }
+
     public int? DayOffset { get; set; }
 
     public async Task<IActionResult> OnGetAsync(int id)
@@ -47,7 +49,25 @@ namespace ShaunFrontEnd.Pages
         Session.Abstract = "<p>" + String.Join("</p><p>", encodedAbstract.Split(encodedCrLf, StringSplitOptions.RemoveEmptyEntries)) + "</p>";
       }
 
+      var userSessions = await _apiClient.GetSessionsByAttendeeAsync(User.Identity.Name);
+
+      IsInPersonalAgenda = userSessions.Any(s => s.ID == id);
+
       return Page();
+    }
+
+    public async Task<IActionResult> OnPostAsync(int sessionId)
+    {
+      await _apiClient.AddSessionToAttendeeAsync(User.Identity.Name, sessionId);
+
+      return RedirectToPage();
+    }
+
+    public async Task<IActionResult> OnPostRemoveAsync(int sessionId)
+    {
+      await _apiClient.RemoveSessionFromAttendeeAsync(User.Identity.Name, sessionId);
+
+      return RedirectToPage();
     }
   }
 }
