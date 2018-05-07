@@ -6,7 +6,7 @@ using HaroldToDo.Models;
 
 namespace HaroldToDo.Services
 {
-    public class FakeTodoItemService ITodoItemService
+    public class FakeTodoItemService :  ITodoItemService
     {
         public Task<IEnumerable<TodoItem>> GetIncompleteItemsAsync()
 
