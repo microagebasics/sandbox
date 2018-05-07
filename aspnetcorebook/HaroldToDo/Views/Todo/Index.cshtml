@@ -1,5 +1,6 @@
 ﻿
 @model TodoViewModel
+@using Humanizer
 
 @{
     ViewData["Title"] = "Manageyour todo list";
@@ -25,7 +26,7 @@
                 </td>
 
                 <td>@item.Title</td>
-                <td>@item.DueAt</td>
+                <td>@item.DueAt.Humanize()</td>
             </tr>
 
         }

@@ -37,7 +37,7 @@ namespace HaroldToDo
       // Add application services.
       services.AddTransient<IEmailSender, EmailSender>();
 
-        services.AddSingleton<ITodoItemService, FakeTodoItemService>();
+      services.AddScoped<ITodoItemService, TodoItemService>();
 
       services.AddMvc();
     }
