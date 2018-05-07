@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using ShaunApi.Models;
+using ShaunApi.Data;
 using Swashbuckle.AspNetCore.Swagger;
 
 namespace ShaunApi
@@ -59,6 +59,10 @@ namespace ShaunApi
       );
 
       app.UseMvc();
+
+      // Comment out the following line to avoid resetting the database each time
+      var loader = new DevIntersectionLoader(app.ApplicationServices);
+      loader.LoadData("DevIntersection_Vegas_2017.json", "DevIntersection Vegas 2017");
     }
   }
 }
