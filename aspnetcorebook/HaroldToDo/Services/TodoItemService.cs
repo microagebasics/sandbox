@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 using HaroldToDo.Data;
 using HaroldToDo.Models;
-using Microsoft.EntityFrameworkCore;
 
 
 namespace HaroldToDo.Services
@@ -25,6 +25,16 @@ namespace HaroldToDo.Services
                 .ToArrayAsync();
 
             return items;
+        }
+        public async Task<bool> AddItemAsync(NewTodoItem newItem)
+        {
+            var entity = new TodoItem
+            {
+                Id = Guid.NewGuid(),
+                IsDone = false,
+                Title = newItem.Title,
+                DueAt = DateTimeOffset.Now.AddDays(3)
+            };
         }
     }
 }

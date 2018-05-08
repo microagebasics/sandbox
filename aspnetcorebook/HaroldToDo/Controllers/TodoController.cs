@@ -17,6 +17,7 @@ namespace HaroldToDo.Controllers
             _todoItemService = todoItemService;
         }
         public async Task<IActionResult> Index()
+
         {
             var todoItems = await _todoItemService.GetIncompleteItemsAsync();
 
@@ -27,6 +28,20 @@ namespace HaroldToDo.Controllers
 
             return View(model);
         }
-       
+        public async Task<IActionResult> AddItem(NewTodoItem newItem)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var successful = await _todoItemService.AddItemAsync(newitem);
+            if (!successful)
+            {
+                return BadRequest(new { error = "Could not add item" });
+            }
+
+            return Ok();
+        }
     }
 }

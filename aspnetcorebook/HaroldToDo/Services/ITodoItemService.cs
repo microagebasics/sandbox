@@ -9,5 +9,7 @@ namespace HaroldToDo.Services
     public interface ITodoItemService
     {
         Task<IEnumerable<TodoItem>> GetIncompleteItemsAsync();
+
+        Task<bool> AddItemSync(NewTodoItem newItem);
     }
 }
