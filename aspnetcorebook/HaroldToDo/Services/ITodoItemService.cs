@@ -10,6 +10,6 @@ namespace HaroldToDo.Services
     {
         Task<IEnumerable<TodoItem>> GetIncompleteItemsAsync();
 
-        Task<bool> AddItemSync(NewTodoItem newItem);
+        Task<bool> AddItemAsync(NewTodoItem newItem);
     }
 }

@@ -35,7 +35,7 @@ namespace HaroldToDo.Controllers
                 return BadRequest(ModelState);
             }
 
-            var successful = await _todoItemService.AddItemAsync(newitem);
+            var successful = await _todoItemService.AddItemAsync(newItem);
             if (!successful)
             {
                 return BadRequest(new { error = "Could not add item" });

@@ -35,6 +35,11 @@ namespace HaroldToDo.Services
                 Title = newItem.Title,
                 DueAt = DateTimeOffset.Now.AddDays(3)
             };
+
+            _context.Items.Add(entity);
+
+            var saveResult = await _context.SaveChangesAsync();
+            return saveResult == 1;
         }
     }
 }
