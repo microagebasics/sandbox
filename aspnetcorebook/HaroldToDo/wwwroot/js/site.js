@@ -3,7 +3,7 @@
 $(document).ready(function () {
 
     // Wire up the Add button to send the new item to the serer
-    $('add-item-button').on('click', addItem);
+    $('#add-item-button').on('click', addItem);
 });
 
 function addItem() {
